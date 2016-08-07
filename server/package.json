@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "forever" : "forever ./bin/www"
+    "forever" : "forever start ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
