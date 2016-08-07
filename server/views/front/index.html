@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="vender/bootstrap/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lte IE 8]>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+<style>
+    h1 img {
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+    #home:link{
+        text-decoration: none;
+    }
+    #home:hover{
+        color:#337ab7;
+    }
+</style>
+    <div class="header">
+      <div class="container">
+          <a id = 'home'href="index.html"><h1><img src="images/home.png">Example page header</h1></a>
+      </div>
+    </div>
+
+
+    <div class="container">
+        <div id='mainContents'>
+
+        </div>
+    </div>
+
+
+
+    <div class="footer" id="footer">
+      <ul class="nav nav-pills nav-justified">
+        <li role="presentation" id="addButton"><a href="#">모음추가</a></li>
+        <li role="presentation" id="removeButton"><a href="#">모음삭제</a></li>
+        <li role="presentation" id="searchButton"><a href="#">검색</a></li>
+        <li role="presentation" id="settingButton"><a href="#">설정</a></li>
+      </ul>
+      <!--진짜버튼은 안보이게 설정한다 -->
+      <button id="realAddButton"  type="button" class="realButton" data-toggle="modal" data-target="#addModal" data-whatever="@getbootstrap">추가버튼</button>
+      <button id="realSearchButton"  type="button" class="realButton" data-toggle="modal" data-target="#searchModal" data-whatever="@getbootstrap">검색버튼</button>
+      <button id="realSettingButton"  type="button" class="realButton">설정버튼</button>
+
+
+    </div>
+
+
+    <div id="dynamicDOM">
+
+<!--추가 모달 HTML-->
+      <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="addModalLabel">추가할 단어를 입력하세요</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="word" class="control-label">단어</label>
+                  <input type="text" class="form-control" id="word">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button id="addModalCloseButton" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button id="addToServerByAjax" type="button" class="btn btn-primary">추가하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--검색 모달 HTML-->
+      <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="searchModalLabel">검색</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="searchWord">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button id="searchModalCloseButton" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button type="button" class="btn btn-primary">검색</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="vender/jquery/jquery-3.1.0.min.js"></script>
+    <script src="vender/bootstrap/js/bootstrap.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/modules/toKoreanChars.js"></script>
+        <script src="scripts/controllers/index.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
