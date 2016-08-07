@@ -11,6 +11,7 @@ var list = require('./routes/list');
 var add = require('./routes/add');
 var remove = require('./routes/remove');
 var detail = require('./routes/detail');
+//var search = require('./routes/search');
 
 var app = express();
 var environment ='dev';
@@ -33,6 +34,8 @@ app.use('/list',list);
 app.use('/add',add);
 app.use('/remove',remove);
 app.use('/detail',detail);
+//app.use('/search',search);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

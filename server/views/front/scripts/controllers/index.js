@@ -64,9 +64,31 @@ $('#removeButton').click(function (){
 
 $('#searchButton').click(function (){
   $('#realSearchButton').trigger('click');
-  $('#mainContents').load('views/main.html');
+  //$('#mainContents').load('views/detail.html');
 });
+$('#searchAjax').click(function(){
+    $('#mainContents').load('views/detail.html');
+    $.ajax({
+        url:'/detail/search',
+        type:'post',
+        data : {'value' : $('#searchWord').val()},
+        success:function(data){
+            $('#searchModal').modal('hide');
+            $('#detailWord').empty();
+            for(var i=0; i<data.length; i++){
+                var word = '<li class="list-group-item">'+data[i].word
+                    +'<span class="badge">'+data[i].create_date+'</span>' +
+                    '</li>';
+                $("#detailMoum").text(data[i].moum);
+                $('#detailWord').append(word);
 
+            }
+
+
+
+        }
+    });
+});
 
 $('#settingButton').click(function (){
   $('#mainContents').load('views/setting.html');
@@ -86,6 +108,7 @@ $('#addToServerByAjax').click(function(){
 
     $.post("/add", { "moum": collections, "word" : word }, function(data){
           alert(data);
+
         }, "json");
     $('#mainContents').load('views/main.html');
 

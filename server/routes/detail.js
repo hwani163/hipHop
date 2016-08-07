@@ -18,6 +18,11 @@ var DETAIL_QUERY = 'SELECT moum,word,create_date' +
                     ' where user_id="hwani163"' +
                     ' and status = true';
 
+var SEARCH_QUERY = 'SELECT distinct moum,word,create_date' +
+    ' FROM RHYME_LIST' +
+    ' where user_id="hwani163"' +
+    ' and status = true ';
+
 /* GET home page. */
 router.post('/', function(req, res, next) {
     console.log('detail...');
@@ -26,7 +31,7 @@ router.post('/', function(req, res, next) {
 
     pool.getConnection(function (err, connection) {
         // Use the connection
-        var QUERY = queryParsing(clazz,keyword);
+        var QUERY = queryParsing(keyword,clazz);
         connection.query(QUERY, function (err, rows) {
             console.log(QUERY);
             console.log(rows);
@@ -38,13 +43,32 @@ router.post('/', function(req, res, next) {
     });
 });
 
-var queryParsing = function(clazz,keyword){
+router.post('/search', function(req, res, next) {
+    console.log('search...');
+
+    var keyword = req.body.value;
+
+    pool.getConnection(function (err, connection) {
+        // Use the connection
+        var QUERY = queryParsing(keyword);
+        connection.query(QUERY, function (err, rows) {
+            console.log(QUERY);
+            console.log(rows);
+            rows = dateParsing(rows);
+            console.log(rows);
+            res.send(rows);
+            connection.release();
+        });
+    });
+});
+
+var queryParsing = function(keyword,clazz){
     if(clazz == 'word'){
-        return DETAIL_QUERY+' and word =\''+keyword+'\'';
+        return DETAIL_QUERY+' and word =\''+keyword+'\' order by create_date desc';
     }else if(clazz =='moum'){
-        return DETAIL_QUERY+' and moum =\''+keyword+'\'';
-    }else{
-        return DETAIL_QUERY+' and word =\''+keyword+'\'';
+        return DETAIL_QUERY+' and moum =\''+keyword+'\' order by create_date desc';
+    }else if(clazz ==undefined){
+        return SEARCH_QUERY+'and word = "'+keyword+'" or moum = "'+keyword+'" order by create_date desc';
     }
 };
 
