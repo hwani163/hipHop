@@ -1,12 +1,12 @@
 var removeMode = false;
 $(document).ready(function() {
-  $('#mainContents').load('views/main.html');
+  $('#mainContents').load('htmls/main.html');
 });
 
 //Event handler
 $('#addButton').click(function (){
   $('#realAddButton').trigger('click');
-  $('#mainContents').load('views/main.html');
+  $('#mainContents').load('htmls/main.html');
 });
 
 $('#removeButton').click(function (){
@@ -67,7 +67,7 @@ $('#searchButton').click(function (){
   //$('#mainContents').load('views/detail.html');
 });
 $('#searchAjax').click(function(){
-    $('#mainContents').load('views/detail.html');
+    $('#mainContents').load('htmls/detail.html');
     $.ajax({
         url:'/detail/search',
         type:'post',
@@ -110,7 +110,7 @@ $('#addToServerByAjax').click(function(){
           alert(data);
 
         }, "json");
-    $('#mainContents').load('views/main.html');
+    $('#mainContents').load('htmls/main.html');
 
   }
 });

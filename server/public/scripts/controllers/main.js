@@ -27,7 +27,7 @@ $.ajax({
 
 
 var wordDetail = function(span){
-  $('#mainContents').load('views/detail.html');
+  $('#mainContents').load('htmls/detail.html');
   var detailKeyword = ($(span).html());
   var detailClass = $(span).attr("class");
 
@@ -40,7 +40,7 @@ var wordDetail = function(span){
               'value' : detailKeyword},
       success:function(response){
         alert(response.success+'개의 단어가 삭제 되었습니다.');
-        $('#mainContents').load('views/main.html');
+        $('#mainContents').load('htmls/main.html');
 
       }
     });
