@@ -16,8 +16,8 @@ var detail = require('./routes/detail');
 var app = express();
 var environment ='dev';
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+//app.set('views', path.join(__dirname, '/server/views'));
+//app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+//app.use('/users', users);
 app.use('/list',list);
 app.use('/add',add);
 app.use('/remove',remove);
@@ -64,6 +64,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 300);
   //res.redirect('/views/front/404.html');
 });
+
+
+
+
+
+
+
 
 
 module.exports = app;

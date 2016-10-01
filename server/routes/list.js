@@ -10,10 +10,10 @@ var pool = mysql.createPool({
   password: '1234qwer'
 });
 
-var LIST_QUERY = 'SELECT moum,word' +
-                ' FROM RHYME_LIST' +
-                ' where user_id="hwani163"' +
-                ' and status = true';
+var LIST_QUERY = 'SELECT moum,word'
+                +' FROM tmp'
+                +' where user_id="hwani163"' +
+                +' and status = true';
 
 HashMap = function(){
   this.map = new Object();
