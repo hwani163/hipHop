@@ -11,8 +11,8 @@ var pool = mysql.createPool({
 });
 
 var LIST_QUERY = 'SELECT moum,word'
-                +' FROM tmp'
-                +' where user_id="hwani163"' +
+                +' FROM RHYME_LIST'
+                +' where user_id="hwani163"'
                 +' and status = true';
 
 HashMap = function(){
