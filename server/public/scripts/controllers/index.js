@@ -68,10 +68,11 @@ $('#searchButton').click(function (){
 });
 $('#searchAjax').click(function(){
     $('#mainContents').load('htmls/detail.html');
+    var searchMoum = $('#searchWord').val().toKoreanChar();
     $.ajax({
-        url:'/detail/search',
+        url:'/detail',
         type:'post',
-        data : {'value' : $('#searchWord').val()},
+        data : {'class' : 'moum', 'value' : searchMoum},
         success:function(data){
             $('#searchModal').modal('hide');
             $('#detailWord').empty();
