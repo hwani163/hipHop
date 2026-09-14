@@ -192,24 +192,47 @@ LCS는 끝 고정이 없어 이 문제가 구조적으로 발생하지 않음.
 
 ## 8. LLM 연동 계획
 
-### 8.1 모델
+### 8.1 호출 경로: OpenRouter
 
-| 용도 | 모델 | 가격(Input/Output, 1M) | 이유 |
-|---|---|---|---|
-| 초안 생성 (1회) | `claude-opus-5` | $5 / $25 | 자연스러운 조합에 창작 품질이 관건 |
-| 부분 재작성 (반복) | `claude-haiku-4-5` | $1 / $5 | 반복 작업이라 속도·비용 우선 |
+Anthropic API를 직접 호출하지 않고 **OpenRouter를 통해 호출**한다.
 
-- 비용 절감이 우선이면 초안 생성도 `claude-sonnet-5`($2/$10)로 대체 가능
-- `claude-haiku-4-5`는 `effort` 파라미터 미지원, thinking은 구식 `budget_tokens` 방식 → **코드 분기 필요**
+| 항목 | 값 |
+|---|---|
+| Base URL | `https://openrouter.ai/api/v1` |
+| 인증 | `Authorization: Bearer <OPENROUTER_API_KEY>` |
+| SDK | **OpenAI SDK를 그대로 사용** (`openai` npm) — baseURL만 교체하는 드롭인 방식 |
+| 모델 지정 | `provider/model` 슬러그 형식 (예: `anthropic/claude-...`) |
+| 선택 헤더 | `HTTP-Referer`, `X-OpenRouter-Title` (앱 기여도 표시용) |
+| 모델 목록 조회 | `GET /api/v1/models` 또는 openrouter.ai/models |
 
-### 8.2 연동
+**채택 이유**: 키 하나로 여러 모델을 바꿔 쓸 수 있어, 8.2의 2단 모델 구성(초안/재작성)과 향후 모델 교체에 유리.
 
-- SDK: `@anthropic-ai/sdk`
-- 인증: `ANTHROPIC_API_KEY` 환경변수. **`.env` + `.gitignore` 필수** (기존 MySQL 비밀번호 노출 사고 반복 금지)
-- 요청: `thinking: {type: "adaptive"}`, `output_config: {effort: "medium"}`, 스트리밍 권장
+### 8.2 모델 구성 (2단)
+
+| 용도 | 등급 | 이유 |
+|---|---|---|
+| 초안 생성 (1회) | 상위 모델 (Opus 급) | 자연스러운 조합에 창작 품질이 관건 |
+| 부분 재작성 (반복) | 경량 모델 (Haiku 급) | 반복 작업이라 속도·비용 우선 |
+
+**주의**: OpenRouter에 어떤 Claude 모델 슬러그가 실제로 올라와 있는지는
+구현 시점에 `GET /api/v1/models`로 **직접 확인 후 확정**한다. 현재 문서에 특정 슬러그를 못박지 않음.
+
+### 8.3 OpenRouter 사용에 따른 제약 (검증 필요)
+
+1. **Anthropic 고유 파라미터 미보장** — OpenRouter는 OpenAI 호환 `chat/completions` 스키마를 쓰므로,
+   Anthropic 전용 옵션(adaptive thinking, effort 레벨 등)이 그대로 전달되는지 확인 필요.
+   전달 안 되면 프롬프트 레벨로 대체해야 함.
+2. **가격** — Anthropic 직접 호출 단가와 다를 수 있음. OpenRouter 모델 페이지에서 실단가 확인 필요.
+3. **홉 추가** — 중계 계층이 하나 더 붙어 지연·장애 지점이 늘어남.
+
+### 8.4 연동
+
+- 인증: `OPENROUTER_API_KEY` 환경변수. **`.env` + `.gitignore` 필수**
+  (기존 MySQL 비밀번호가 코드에 하드코딩된 채 퍼블릭 저장소에 노출된 사고 반복 금지)
 - 신규 라우트: `server/routes/generate.js`
+- 긴 출력 대비 스트리밍 권장
 
-### 8.3 G2P 서비스
+### 8.5 G2P 서비스
 
 `KoG2P` / `g2pK` 모두 Python + Mecab 의존 → Node.js 앱에 직접 탑재 불가.
 **별도 마이크로서비스로 분리**하거나 JS 포팅 필요. (미결정)
@@ -244,3 +267,5 @@ LCS는 끝 고정이 없어 이 문제가 구조적으로 발생하지 않음.
 - [RhymeBot-Web — GitHub](https://github.com/duckduckhero/RhymeBot-Web)
 - [g2pK — GitHub](https://github.com/Kyubyong/g2pK)
 - [딥러닝 기반 언어 모델들을 활용한 라임 기반 한국어 랩 가사 생성 시스템 — DBpia](https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11036039)
+- [OpenRouter Quickstart](https://openrouter.ai/docs/quickstart)
+- [OpenRouter 모델 목록](https://openrouter.ai/models)
